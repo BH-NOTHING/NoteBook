@@ -1,32 +1,34 @@
 <template>
-  <div>
+  <div class="note-list">
     <div class="page-top">
       <div class="page-content">
-        <h2>任务计划列表</h2>
+        <h2>记事本</h2>
       </div>
     </div>
     <div class="main">
-      <h3 class="big-title">添加任务：</h3>
-      <input
-        type="text"
-        placehoder="例如：吃饭睡觉打豆豆；提示：+回车即可添加任务"
-        class="task-input"
-        v-model="todo"
-        v-on:keyup.enter="addTodo"
-      />
+      <h3 class="big-title">添加事项：</h3>
+      <div class="task-add">
+        <input
+          type="text"
+          placehoder="例如：吃饭睡觉打豆豆；提示：+回车即可添加任务"
+          class="task-add-input"
+          v-model="todo"
+        />
+        <button class="task-add-btn" @click="addTodo">添加</button>
+      </div>
       <ul class="task-content" v-show="list.length">
-        <li>
-          {{noCheckedItem}}个任务未完成
+        <li class="task-content-tips">
+          {{noCheckedItem}}个事项未完成
         </li>
         <li class="action">
-          <a class="active" href="#all">所有任务</a>
-          <a href="#unfinished">未完成的任务</a>
-          <a href="#finished">完成的任务</a>
+          <a :class="{active:visibility === 'all'}" href="#all">所有事项</a>
+          <a :class="{active:visibility === 'unfinished'}" href="#unfinished">未完成事项</a>
+          <a :class="{active:visibility === 'finished'}" href="#finished">已完成事项</a>
         </li>
       </ul>
-      <h3 class="big-title">任务列表：</h3>
+      <h3 class="big-title">事项列表：</h3>
       <div class="tasks">
-        <span class="no-task-tip" v-show="!list.length">还没有添加任何任务</span>
+        <span class="no-task-tip" v-show="!list.length">还没有添加任何事项</span>
         <ul class="todo-list">
           <li class="todo" v-bind:class="{completed: item.isChecked,editing:item === editorTodos}" v-for="(item,index) in filteredList" :key="index">
             <div class="view">
@@ -52,18 +54,9 @@
 </template>
 
 <script>
-// import Vue from 'vue/dist/vue.common'
-var store = {
-  save (key, value) {
-    localStorage.setItem(key, JSON.stringify(value))
-  },
-  fetch (key) {
-    return JSON.parse(localStorage.getItem(key)) || []
-  }
-}
-// 数据
-// 去除所有的值
-var list = store.fetch('todolist-class')// 从缓存中调用数据
+import store from '../utils/store'
+
+const list = store.fetch('todolist-class')
 
 export default {
   name: 'noteList',
@@ -88,6 +81,12 @@ export default {
       },
       deep: true // 深度监控
     }
+  },
+  mounted () {
+    window.addEventListener('hashchange', this.watchHashChange)
+  },
+  destroyed () {
+    window.removeEventListener('hashchange', this.watchHashChange)
   },
   computed: {
     noCheckedItem: function () {
@@ -117,24 +116,24 @@ export default {
     }
   },
   methods: {
-    addTodo () { // 添加任务
+    addTodo () { // 添加事项
       /* {
           title:
       } */
-      this.list.push({// 往数组里添加任务，格式是个对象
+      this.list.push({// 往数组里添加事项，格式是个对象
         title: this.todo, // 事件处理函数中的this指向的是，当前这个根实例，即new Vue
         isChecked: false
       })
       this.todo = ''
     },
 
-    deleteTodo (todo) { // 删除任务
+    deleteTodo (todo) { // 删除事项
       var index = this.list.indexOf(todo)
       this.list.splice(index, 1)
     },
 
-    editorTodo (todo) { // 编辑任务
-      // 编辑任务的时候，记录一下编辑这条任务的title，方便在取消编辑的时候还能用到原来的title，写在数据中：beforeTitle
+    editorTodo (todo) { // 编辑事项
+      // 编辑事项的时候，记录一下编辑这条事项的title，方便在取消编辑的时候还能用到原来的title，写在数据中：beforeTitle
 
       this.beforeTitle = todo.title
       this.editorTodos = todo
@@ -148,6 +147,10 @@ export default {
       todo.title = this.beforeTitle
       this.editorTodoed(todo)
       this.beforeTitle = ''// 之前记录的值已经没用了，重新设为空
+    },
+    watchHashChange () {
+      var hash = window.location.hash.slice(1)// 去掉#号
+      this.visibility = hash// 拿到去了#的hash值后改变实例的visibility属性值
     }
   }, // end methods
   directives: {// 自定义指令
@@ -163,6 +166,6 @@ export default {
   }// end directives
 }
 </script>
-<style lang="scss">
+<style lang="scss" scoped>
   @import "../style/list";
 </style>
