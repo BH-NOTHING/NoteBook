@@ -30,15 +30,15 @@
       <div class="notes">
         <span class="no-note-tip" v-show="!list.length">还没有添加任何事项</span>
         <ul class="todo-list">
-          <li class="todo" v-bind:class="{completed: item.isChecked,editing:item === editorTodos}" v-for="(item,index) in filteredList" :key="index">
+          <li class="todo" v-bind:class="{completed: item.isChecked,editing:item === editTodos}" v-for="(item,index) in filteredList" :key="index">
             <div class="view">
               <input type="checkbox" class="toggle" v-model="item.isChecked">
               <!--<el-checkbox v-model="item.isChecked"></el-checkbox>-->
-              <label @click = "editorTodo(item)">{{item.title}}</label>
+              <label @click = "onEdit(item)">{{item.title}}</label>
               <button class="destroy" @click="deleteTodo(item)"></button>
             </div>
             <input
-              v-foucs="item === editorTodos"
+              v-foucs="item === editTodos"
               type="text"
               class="edit"
               v-model="item.title"
@@ -65,7 +65,7 @@ export default {
     return {
       list: list,
       todo: '',
-      editorTodos: '', // 记录正在编辑的数据
+      editTodos: '', // 正在编辑的数据
       beforeTitle: '', // 记录正在编辑的数据的title
       visibility: 'all'// 通过这个属性值的变化，结合hash对数据进行筛选，默认值是all
     }
@@ -120,7 +120,7 @@ export default {
       /* {
           title:
       } */
-      this.list.push({// 往数组里添加事项，格式是个对象
+      this.list.push({ // 往数组里添加事项，格式是个对象
         title: this.todo, // 事件处理函数中的this指向的是，当前这个根实例，即new Vue
         isChecked: false
       })
@@ -132,15 +132,15 @@ export default {
       this.list.splice(index, 1)
     },
 
-    editorTodo (todo) { // 编辑事项
+    onEdit (todo) { // 编辑事项
       // 编辑事项的时候，记录一下编辑这条事项的title，方便在取消编辑的时候还能用到原来的title，写在数据中：beforeTitle
 
       this.beforeTitle = todo.title
-      this.editorTodos = todo
+      this.editTodos = todo
     },
 
     editorTodoed (todo) { // 编辑完成后失去焦点
-      this.editorTodos = ''
+      this.editTodos = ''
     },
 
     cancelTodo (todo) { // 取消编辑
@@ -153,11 +153,9 @@ export default {
       this.visibility = hash// 拿到去了#的hash值后改变实例的visibility属性值
     }
   }, // end methods
-  directives: {// 自定义指令
+  directives: {
     'foucs': {
-      update (el, binding) { // 钩子函数
-        // console.log(el);
-        // console.log(binding);
+      update (el, binding) {
         if (binding.value) {
           el.focus()
         }

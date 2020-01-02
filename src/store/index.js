@@ -5,7 +5,7 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
-    todos: [
+    list: [
       {id: 1, text: 'aaaaaaa', done: true},
       {id: 2, text: 'bbbbbbb', done: false}
     ]
@@ -17,7 +17,14 @@ export default new Vuex.Store({
   },
   mutations: {
     addTodo (state, todo) {
-      state.todos.push(todo)
+      state.list.push({
+        title: todo,
+        isChecked: false
+      })
+    },
+    deleteTodo (state, todo) { // 删除事项
+      let index = state.list.indexOf(todo)
+      state.list.splice(index, 1)
     }
   },
   actions: {
