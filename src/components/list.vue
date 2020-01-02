@@ -1,60 +1,13 @@
 <template>
-    <quill-editor
-      ref="myQuillEditor"
-      v-model="content"
-      :options="editorOption"
-      :disabled="!disabled"
-      contenteditable="false"
-      @blur="onEditorBlur($event)"
-      @focus="onEditorFocus($event)"
-      @ready="onEditorReady($event)"
-      @change="onEditorChange($event)"/>
+  <button @click="addTodo">添加</button>
 </template>
 
 <script>
-import quillEditor from 'vue-quill-editor/src/editor'
-import 'quill/dist/quill.core.css'
-import 'quill/dist/quill.snow.css'
-import 'quill/dist/quill.bubble.css'
+
 export default {
-  name: 'noteEditor',
-  components: {
-    quillEditor
-  },
-  props: {
-    width: {
-      type: String,
-      default: '100%'
-    },
-    height: {
-      type: String,
-      default: '300px'
-    },
-    headColor: String,
-    bodyColor: String,
-    disabled: {
-      default: true,
-      type: Boolean
-    },
-    contentHtml: null,
-    version: {
-      type: Boolean,
-      default: false
-    },
-    setContent: String,
-    borderWidth: {
-      type: Number,
-      default: 1
-    },
-    borderColor: {
-      type: String,
-      default: '#CCCCCC'
-    },
-    placeholder: {
-      type: String,
-      default: '请输入内容'
-    }
-  },
+  name: 'noteList',
+  components: {},
+  props: {},
   data () {
     return {
       content: '',
@@ -67,9 +20,7 @@ export default {
     }
   },
   computed: {
-    editor () {
-      return this.$refs.myQuillEditor.quill
-    }
+
   },
   created () {
   },
@@ -79,25 +30,12 @@ export default {
   mounted () {
   },
   methods: {
-    onEditorBlur (quill) {
-      this.$emit('blur', {})
-    },
-    onEditorFocus (quill) {
-      this.$emit('focus', {})
-    },
-    onEditorReady (quill) {
-      this.$emit('ready', {})
-    },
-    onEditorChange ({ quill, html, text }) {
-      this.$emit('valueChange', {
-        contentHtml: JSON.stringify(quill.getContents().ops)
+    addTodo () {
+      this.$store.commit({
+        type: 'addTodo',
+        todo: {id: 2, text: 'bbbbbbb', done: false}
       })
-    },
-    onEditorMouseover (e) {
-      this.$emit('mouseover', {})
-    },
-    onEditorMouseout (e) {
-      this.$emit('mouseout', {})
+      console.log(this.$store.state.todos)
     }
   }
 }
