@@ -58,7 +58,9 @@ export default {
   data () {
     return {
       content: '',
-      editorOption: {},
+      editorOption: {
+        theme: 'snow'
+      },
       code: false,
       name: 'editor',
       reset: false
@@ -100,3 +102,8 @@ export default {
   }
 }
 </script>
+<style lang="scss">
+  #app {
+    width: 100%;
+  }
+</style>
