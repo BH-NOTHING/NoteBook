@@ -7,17 +7,17 @@
     </div>
     <div class="main">
       <h3 class="big-title">添加事项：</h3>
-      <div class="task-add">
+      <div class="note-add">
         <input
           type="text"
           placehoder="例如：吃饭睡觉打豆豆；提示：+回车即可添加任务"
-          class="task-add-input"
+          class="note-add-input"
           v-model="todo"
         />
-        <button class="task-add-btn" @click="addTodo">添加</button>
+        <button class="note-add-btn" @click="addTodo">添加</button>
       </div>
-      <ul class="task-content" v-show="list.length">
-        <li class="task-content-tips">
+      <ul class="note-content" v-show="list.length">
+        <li class="note-content-tips">
           {{noCheckedItem}}个事项未完成
         </li>
         <li class="action">
@@ -27,8 +27,8 @@
         </li>
       </ul>
       <h3 class="big-title">事项列表：</h3>
-      <div class="tasks">
-        <span class="no-task-tip" v-show="!list.length">还没有添加任何事项</span>
+      <div class="notes">
+        <span class="no-note-tip" v-show="!list.length">还没有添加任何事项</span>
         <ul class="todo-list">
           <li class="todo" v-bind:class="{completed: item.isChecked,editing:item === editorTodos}" v-for="(item,index) in filteredList" :key="index">
             <div class="view">

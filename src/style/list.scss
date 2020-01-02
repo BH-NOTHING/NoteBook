@@ -68,18 +68,18 @@ ul {
   box-sizing:border-box;
 }
 
-.task-count{
+.note-count{
   display: flex;
   margin:10px 0;
 }
 
-.task-count li {
+.note-count li {
   padding-left: 10px;
   flex: 1;
   color: #dd4b39;
 }
 
-.task-count li:nth-child(1){
+.note-count li:nth-child(1){
   padding: 5px 0 0 10px;
 }
 
@@ -102,10 +102,10 @@ ul {
   border: 1px solid rgba(175, 47, 47, 0.2);
 }
 
-.tasks {
+.notes {
   background-color: #fff;
 }
-.no-task-tip {
+.no-note-tip {
   padding:10px 0 10px 10px;
   display: block;
   border-bottom: 1px solid #ededed;
@@ -116,25 +116,25 @@ ul {
   color: #222;
 }
 
-.task-add {
+.note-add {
   width: 100%;
   display: flex;
-  .task-add-input {
+  .note-add-input {
     flex: 1;
     height:30px;
     outline: 0;
     padding: 0 10px;
     border: 1px solid #ccc;
   }
-  .task-add-btn {
+  .note-add-btn {
     width: 100px;
     border: 1px solid #ccc;
     border-left: 0;
   }
 }
 
-.task-content {
-  .task-content-tips {
+.note-content {
+  .note-content-tips {
     padding: 10px 0;
   }
 }
