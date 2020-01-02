@@ -10,7 +10,7 @@
       <div class="note-add">
         <input
           type="text"
-          placehoder="例如：吃饭睡觉打豆豆；提示：+回车即可添加任务"
+          placehoder="添加事项"
           class="note-add-input"
           v-model="todo"
         />
@@ -33,7 +33,6 @@
           <li class="todo" v-bind:class="{completed: item.isChecked,editing:item === editTodos}" v-for="(item,index) in filteredList" :key="index">
             <div class="view">
               <input type="checkbox" class="toggle" v-model="item.isChecked">
-              <!--<el-checkbox v-model="item.isChecked"></el-checkbox>-->
               <label @click = "onEdit(item)">{{item.title}}</label>
               <button class="destroy" @click="deleteTodo(item)"></button>
             </div>
@@ -42,8 +41,8 @@
               type="text"
               class="edit"
               v-model="item.title"
-              @blur="editorTodoed(item)"
-              @keyup.enter = "editorTodoed(item)"
+              @blur="onEditComlish(item)"
+              @keyup.enter = "onEditComlish(item)"
               @keyup.esc = "cancelTodo(item)"
             />
           </li>
@@ -71,15 +70,11 @@ export default {
     }
   },
   watch: {
-    /* list:function(){//监控list这个属性，当这个属性对应的值发生变化就会执行函数
-        store.save("todolist-class",this.list);//浅监控，监控不到list里面各个对象中属性的变化
-    } */
-
-    list: {// 这里list是个对象
+    list: {
       handler: function () {
         store.save('todolist-class', this.list)
       },
-      deep: true // 深度监控
+      deep: true
     }
   },
   mounted () {
@@ -94,9 +89,9 @@ export default {
         return item.isChecked === false
       }).length
     },
-    filteredList: function () { // 根据vm的visibility属性来过滤数据
+    filteredList: function () {
       // 按三种情况过滤：all,finished,unfinished
-      var filter = {
+      let filter = {
         all: function () {
           return list
         },
@@ -110,49 +105,43 @@ export default {
             return !item.isChecked
           })
         }
-      }// end filter
-      // 考虑到手工改动url栏里hash值的情况，这里加入了判断：找到了过滤函数，就返回过滤后的数据，否则返回所有的数据
+      }
       return filter[this.visibility] ? filter[this.visibility](list) : list// 这里写上(list)才能返回根据数据筛选的值
     }
   },
   methods: {
     addTodo () { // 添加事项
-      /* {
-          title:
-      } */
-      this.list.push({ // 往数组里添加事项，格式是个对象
-        title: this.todo, // 事件处理函数中的this指向的是，当前这个根实例，即new Vue
+      this.list.push({
+        title: this.todo,
         isChecked: false
       })
       this.todo = ''
     },
 
-    deleteTodo (todo) { // 删除事项
-      var index = this.list.indexOf(todo)
+    deleteTodo (todo) {
+      let index = this.list.indexOf(todo)
       this.list.splice(index, 1)
     },
 
-    onEdit (todo) { // 编辑事项
-      // 编辑事项的时候，记录一下编辑这条事项的title，方便在取消编辑的时候还能用到原来的title，写在数据中：beforeTitle
-
+    onEdit (todo) {
       this.beforeTitle = todo.title
       this.editTodos = todo
     },
 
-    editorTodoed (todo) { // 编辑完成后失去焦点
+    onEditComlish (todo) {
       this.editTodos = ''
     },
 
-    cancelTodo (todo) { // 取消编辑
+    cancelTodo (todo) {
       todo.title = this.beforeTitle
-      this.editorTodoed(todo)
-      this.beforeTitle = ''// 之前记录的值已经没用了，重新设为空
+      this.onEditComlish(todo)
+      this.beforeTitle = ''
     },
     watchHashChange () {
-      var hash = window.location.hash.slice(1)// 去掉#号
-      this.visibility = hash// 拿到去了#的hash值后改变实例的visibility属性值
+      let hash = window.location.hash.slice(1)
+      this.visibility = hash
     }
-  }, // end methods
+  },
   directives: {
     'foucs': {
       update (el, binding) {
@@ -160,8 +149,8 @@ export default {
           el.focus()
         }
       }
-    }// end focus
-  }// end directives
+    }
+  }
 }
 </script>
 <style lang="scss" scoped>
