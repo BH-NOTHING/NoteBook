@@ -6,7 +6,6 @@
       </div>
     </div>
     <div class="note-main">
-      <h3 class="main-title">添加事项：</h3>
       <div class="note-add">
         <input
           type="text"
