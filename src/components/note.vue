@@ -73,7 +73,7 @@ import quillEditor from 'vue-quill-editor/src/editor'
 import 'quill/dist/quill.core.css'
 import 'quill/dist/quill.snow.css'
 
-const list = store.fetch('todolist-class')
+const list = store.fetch('noteStore')
 
 export default {
   name: 'notePad',
