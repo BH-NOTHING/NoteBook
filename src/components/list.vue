@@ -14,7 +14,7 @@
           class="note-add-input"
           v-model="todo"
         />
-        <button class="note-add-btn" @click="addTodo">添加</button>
+        <button class="note-add-btn" @click="onAdd">添加</button>
       </div>
       <ul class="note-content" v-show="list.length">
         <li class="note-content-tips">
@@ -33,17 +33,17 @@
           <li class="todo" v-bind:class="{completed: item.isChecked,editing:item === editTodos}" v-for="(item,index) in filteredList" :key="index">
             <div class="view">
               <input type="checkbox" class="toggle" v-model="item.isChecked">
-              <label @click = "onEdit(item)">{{item.title}}</label>
-              <button class="destroy" @click="deleteTodo(item)"></button>
+              <label @dblclick="onEdit(item)" @click="onToggleEditor">{{item.title}}</label>
+              <button class="destroy" @click="onDelete(item)"></button>
             </div>
             <input
               v-foucs="item === editTodos"
               type="text"
               class="edit"
               v-model="item.title"
-              @blur="onEditComlish(item)"
-              @keyup.enter = "onEditComlish(item)"
-              @keyup.esc = "cancelTodo(item)"
+              @blur="onEditComplete(item)"
+              @keyup.enter = "onEditComplete(item)"
+              @keyup.esc = "onCancel(item)"
             />
           </li>
         </ul>
@@ -54,7 +54,6 @@
 
 <script>
 import store from '../utils/store'
-
 const list = store.fetch('todolist-class')
 
 export default {
@@ -78,10 +77,10 @@ export default {
     }
   },
   mounted () {
-    window.addEventListener('hashchange', this.watchHashChange)
+    window.addEventListener('hashchange', this.onHashChange)
   },
   destroyed () {
-    window.removeEventListener('hashchange', this.watchHashChange)
+    window.removeEventListener('hashchange', this.onHashChange)
   },
   computed: {
     noCheckedItem: function () {
@@ -106,11 +105,11 @@ export default {
           })
         }
       }
-      return filter[this.visibility] ? filter[this.visibility](list) : list// 这里写上(list)才能返回根据数据筛选的值
+      return filter[this.visibility] ? filter[this.visibility](list) : list
     }
   },
   methods: {
-    addTodo () { // 添加事项
+    onAdd () { // 添加事项
       this.list.push({
         title: this.todo,
         isChecked: false
@@ -118,7 +117,7 @@ export default {
       this.todo = ''
     },
 
-    deleteTodo (todo) {
+    onDelete (todo) {
       let index = this.list.indexOf(todo)
       this.list.splice(index, 1)
     },
@@ -128,18 +127,21 @@ export default {
       this.editTodos = todo
     },
 
-    onEditComlish (todo) {
+    onEditComplete (todo) {
       this.editTodos = ''
     },
 
-    cancelTodo (todo) {
+    onCancel (todo) {
       todo.title = this.beforeTitle
-      this.onEditComlish(todo)
+      this.onEditComplete(todo)
       this.beforeTitle = ''
     },
-    watchHashChange () {
+    onHashChange () {
       let hash = window.location.hash.slice(1)
       this.visibility = hash
+    },
+    onToggleEditor () {
+      console.log('toggle editor')
     }
   },
   directives: {
