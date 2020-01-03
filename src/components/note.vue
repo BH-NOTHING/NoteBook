@@ -92,7 +92,7 @@ export default {
   watch: {
     noteList: {
       handler: function () {
-        store.save('todolist-class', this.list)
+        store.save('todolist-class', this.noteList)
       },
       deep: true
     }

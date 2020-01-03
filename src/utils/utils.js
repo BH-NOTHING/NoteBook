@@ -34,5 +34,8 @@ export function getNowFormatDate () {
   if (strDate >= 0 && strDate <= 9) {
     strDate = '0' + strDate
   }
+  if (second >= 0 && second <= 9) {
+    second = '0' + second
+  }
   return year + '-' + month + '-' + strDate + ' ' + hour + ':' + minute + ':' + second
 }
