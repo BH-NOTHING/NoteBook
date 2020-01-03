@@ -3,11 +3,9 @@
 import Vue from 'vue'
 import App from './App'
 import ElementUI from 'element-ui'
-import ClickOutSide from 'vue-v-clickoutside'
 import 'element-ui/lib/theme-chalk/index.css'
 
 Vue.use(ElementUI)
-Vue.directive('clickoutside', ClickOutSide)
 Vue.config.productionTip = false
 
 /* eslint-disable no-new */

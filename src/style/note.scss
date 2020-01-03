@@ -118,7 +118,6 @@
             display: none;
           }
           .destroy {
-            color: #af5b5e;
             display: block;
             position: absolute;
             top: 0;
@@ -129,6 +128,7 @@
             margin: auto 0;
             font-size: 30px;
             color: #cc9a9a;
+            cursor: pointer;
             transition: color 0.2s ease-out;
             &:after {
               content: '×';
