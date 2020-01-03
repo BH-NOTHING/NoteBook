@@ -16,7 +16,7 @@
         <button class="note-add-btn" @click="onAdd">添加</button>
       </div>
       <ul class="note-content" v-show="noteList.length">
-        <li class="note-content-tips">{{ noCheckedItem }}个事项未完成</li>
+        <li class="note-content-tips">还有{{ unFinishItem }}个事项未完成</li>
         <li class="note-action">
           <a :class="{ active: visibility === 'all' }" href="#all">所有事项</a>
           <a :class="{ active: visibility === 'unfinished' }" href="#unfinished"
@@ -104,7 +104,7 @@ export default {
     window.removeEventListener('hashchange', this.onHashChange)
   },
   computed: {
-    noCheckedItem: function () {
+    unFinishItem: function () {
       return this.noteList.filter(function (item) {
         return item.isChecked === false
       }).length
