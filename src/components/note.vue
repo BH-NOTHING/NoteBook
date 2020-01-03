@@ -39,7 +39,7 @@
               completed: item.isChecked,
               editing: item === editNotes
             }"
-            v-for="(item) in filteredList"
+            v-for="(item) in filteredList()"
             :key="item.time"
           >
             <div class="todo-view">
@@ -86,13 +86,13 @@ export default {
       noteList: list,
       newNote: '',
       editNotes: {}, // 正在编辑的数据
-      visibility: 'all' // 通过这个属性值的变化，结合hash对数据进行筛选，默认值是all
+      visibility: window.location.hash.slice(1) || 'all' // 通过这个属性值的变化，结合hash对数据进行筛选，默认值是all
     }
   },
   watch: {
     noteList: {
       handler: function () {
-        store.save('todolist-class', this.noteList)
+        store.save('noteStore', this.noteList)
       },
       deep: true
     }
@@ -108,27 +108,6 @@ export default {
       return this.noteList.filter(function (item) {
         return item.isChecked === false
       }).length
-    },
-    filteredList: function () {
-      // 按三种情况过滤：all,finished,unfinished
-      let filter = {
-        all: function () {
-          return list
-        },
-        finished: function () {
-          return list.filter(function (item) {
-            return item.isChecked
-          })
-        },
-        unfinished: function () {
-          return list.filter(function (item) {
-            return !item.isChecked
-          })
-        }
-      }
-      let result = filter[this.visibility] ? filter[this.visibility](list) : list
-      console.log(result)
-      return result || []
     }
   },
   methods: {
@@ -166,6 +145,26 @@ export default {
     closeEditor () {
       // 关闭编辑器
       this.editNotes = {}
+    },
+    filteredList () {
+      // 按三种情况过滤：all,finished,unfinished
+      let filter = {
+        all: function () {
+          return list
+        },
+        finished: function () {
+          return list.filter(function (item) {
+            return item.isChecked
+          })
+        },
+        unfinished: function () {
+          return list.filter(function (item) {
+            return !item.isChecked
+          })
+        }
+      }
+      let result = filter[this.visibility] ? filter[this.visibility](list) : list
+      return result || []
     }
   }
 }
