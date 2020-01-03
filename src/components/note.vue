@@ -17,33 +17,45 @@
         <button class="note-add-btn" @click="onAdd">添加</button>
       </div>
       <ul class="note-content" v-show="list.length">
-        <li class="note-content-tips">
-          {{noCheckedItem}}个事项未完成
-        </li>
+        <li class="note-content-tips">{{ noCheckedItem }}个事项未完成</li>
         <li class="action">
-          <a :class="{active:visibility === 'all'}" href="#all">所有事项</a>
-          <a :class="{active:visibility === 'unfinished'}" href="#unfinished">未完成事项</a>
-          <a :class="{active:visibility === 'finished'}" href="#finished">已完成事项</a>
+          <a :class="{ active: visibility === 'all' }" href="#all">所有事项</a>
+          <a :class="{ active: visibility === 'unfinished' }" href="#unfinished"
+            >未完成事项</a
+          >
+          <a :class="{ active: visibility === 'finished' }" href="#finished"
+            >已完成事项</a
+          >
         </li>
       </ul>
       <h3 class="txt-title">事项列表：</h3>
       <div class="notes">
-        <span class="no-note-tip" v-show="!list.length">还没有添加任何事项</span>
+        <span class="no-note-tip" v-show="!list.length"
+          >还没有添加任何事项</span
+        >
         <ul class="todo-list">
-          <li class="todo" v-bind:class="{completed: item.isChecked,editing:item === editTodos}" v-for="(item,index) in filteredList" :key="index">
+          <li
+            class="todo"
+            v-bind:class="{
+              completed: item.isChecked,
+              editing: item === editTodos
+            }"
+            v-for="(item, index) in filteredList"
+            :key="index"
+          >
             <div class="view">
-              <input type="checkbox" class="toggle" v-model="item.isChecked">
-              <label @dblclick="onEdit(item)" @click="onToggleEditor">{{item.title}}</label>
+              <input type="checkbox" class="toggle" v-model="item.isChecked" />
+              <label @click="onEdit(item)">{{ item.title }}</label>
               <button class="destroy" @click="onDelete(item)"></button>
             </div>
-            <input
+            <quill-editor
+              ref="myQuillEditor"
               v-foucs="item === editTodos"
-              type="text"
+              v-model="item.content"
               class="edit"
-              v-model="item.title"
-              @blur="onEditComplete(item)"
-              @keyup.enter = "onEditComplete(item)"
-              @keyup.esc = "onCancel(item)"
+              contenteditable="false"
+              @change="onChange($event, item)"
+              @blur="onEditComplete"
             />
           </li>
         </ul>
@@ -54,10 +66,17 @@
 
 <script>
 import store from '../utils/store'
+import quillEditor from 'vue-quill-editor/src/editor'
+import 'quill/dist/quill.core.css'
+import 'quill/dist/quill.snow.css'
+import 'quill/dist/quill.bubble.css'
 const list = store.fetch('todolist-class')
 
 export default {
-  name: 'noteList',
+  name: 'notePad',
+  components: {
+    quillEditor
+  },
   props: {},
   data () {
     return {
@@ -65,7 +84,7 @@ export default {
       todo: '',
       editTodos: '', // 正在编辑的数据
       beforeTitle: '', // 记录正在编辑的数据的title
-      visibility: 'all'// 通过这个属性值的变化，结合hash对数据进行筛选，默认值是all
+      visibility: 'all' // 通过这个属性值的变化，结合hash对数据进行筛选，默认值是all
     }
   },
   watch: {
@@ -109,10 +128,12 @@ export default {
     }
   },
   methods: {
-    onAdd () { // 添加事项
+    onAdd () {
+      // 添加事项
       this.list.push({
-        title: this.todo,
-        isChecked: false
+        title: this.todo.substring(0, 10),
+        isChecked: false,
+        content: this.todo
       })
       this.todo = ''
     },
@@ -127,25 +148,19 @@ export default {
       this.editTodos = todo
     },
 
-    onEditComplete (todo) {
+    onEditComplete () {
       this.editTodos = ''
     },
-
-    onCancel (todo) {
-      todo.title = this.beforeTitle
-      this.onEditComplete(todo)
-      this.beforeTitle = ''
+    onChange ({ html, text, quill }, item) {
+      item.title = text.substring(0, 10)
     },
     onHashChange () {
       let hash = window.location.hash.slice(1)
       this.visibility = hash
-    },
-    onToggleEditor () {
-      console.log('toggle editor')
     }
   },
   directives: {
-    'foucs': {
+    foucs: {
       update (el, binding) {
         if (binding.value) {
           el.focus()
@@ -156,5 +171,5 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
-  @import "../style/list";
+@import "../style/list";
 </style>

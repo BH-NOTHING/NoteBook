@@ -1,21 +1,16 @@
 <template>
   <div id="app">
-    <!--<NoteEditor/>-->
-    <NoteList/>
+    <NotePad/>
   </div>
 </template>
 
 <script>
-import NoteEditor from './components/editor'
-import NoteList from './components/list'
-import store from './store/index'
+import NotePad from './components/note'
 
 export default {
   name: 'App',
-  store,
   components: {
-    NoteEditor,
-    NoteList
+    NotePad
   }
 }
 </script>
