@@ -1,5 +1,5 @@
 <template>
-  <div class="note-list">
+  <div class="note-book">
     <div class="note-header">
       <div class="header-title">
         <h2>记事本</h2>
@@ -84,9 +84,9 @@ export default {
   data () {
     return {
       noteList: list,
-      newNote: '',
+      newNote: '', // 添加的新事项
       editNotes: {}, // 正在编辑的数据
-      visibility: window.location.hash.slice(1) || 'all' // 通过这个属性值的变化，结合hash对数据进行筛选，默认值是all
+      visibility: window.location.hash.slice(1) || 'all' // 通过visibility变化，结合hash对数据进行筛选，默认值是all
     }
   },
   watch: {
