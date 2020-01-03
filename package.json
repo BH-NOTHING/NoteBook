@@ -15,6 +15,7 @@
     "scss-loader": "0.0.1",
     "vue": "^2.5.2",
     "vue-quill-editor": "^3.0.6",
+    "vue-v-clickoutside": "^1.0.2",
     "vuex": "^3.1.2"
   },
   "devDependencies": {

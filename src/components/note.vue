@@ -1,12 +1,12 @@
 <template>
   <div class="note-list">
-    <div class="page-top">
-      <div class="page-content">
+    <div class="note-header">
+      <div class="header-title">
         <h2>记事本</h2>
       </div>
     </div>
-    <div class="main">
-      <h3 class="txt-title">添加事项：</h3>
+    <div class="note-main">
+      <h3 class="main-title">添加事项：</h3>
       <div class="note-add">
         <input
           type="text"
@@ -18,7 +18,7 @@
       </div>
       <ul class="note-content" v-show="list.length">
         <li class="note-content-tips">{{ noCheckedItem }}个事项未完成</li>
-        <li class="action">
+        <li class="note-action">
           <a :class="{ active: visibility === 'all' }" href="#all">所有事项</a>
           <a :class="{ active: visibility === 'unfinished' }" href="#unfinished"
             >未完成事项</a
@@ -28,7 +28,7 @@
           >
         </li>
       </ul>
-      <h3 class="txt-title">事项列表：</h3>
+      <h3 class="main-title">事项列表：</h3>
       <div class="notes">
         <span class="no-note-tip" v-show="!list.length"
           >还没有添加任何事项</span
@@ -43,23 +43,26 @@
             v-for="(item, index) in filteredList"
             :key="index"
           >
-            <div class="view">
+            <div class="todo-view">
               <input type="checkbox" class="toggle" v-model="item.isChecked" />
               <label @click="onEdit(item)">{{ item.title }}</label>
               <button class="destroy" @click="onDelete(item)"></button>
             </div>
-            <quill-editor
-              ref="myQuillEditor"
-              v-foucs="item === editTodos"
-              v-model="item.content"
-              class="edit"
-              contenteditable="false"
-              @change="onChange($event, item)"
-              @blur="onEditComplete"
-            />
           </li>
         </ul>
       </div>
+    </div>
+    <div class="note-editor" v-if="editTodos.content !== undefined">
+      <div class="note-editor-header">
+        <button class="note-back" @click="closeEditor" />
+      </div>
+      <quill-editor
+        ref="myQuillEditor"
+        v-model="editTodos.content"
+        class="edit"
+        contenteditable="false"
+        @change="onChange($event, editTodos)"
+      />
     </div>
   </div>
 </template>
@@ -82,8 +85,8 @@ export default {
     return {
       list: list,
       todo: '',
-      editTodos: '', // 正在编辑的数据
-      beforeTitle: '', // 记录正在编辑的数据的title
+      editTodos: {}, // 正在编辑的数据
+      lastTodo: {}, // 编辑前的数据
       visibility: 'all' // 通过这个属性值的变化，结合hash对数据进行筛选，默认值是all
     }
   },
@@ -144,12 +147,11 @@ export default {
     },
 
     onEdit (todo) {
-      this.beforeTitle = todo.title
       this.editTodos = todo
     },
 
     onEditComplete () {
-      this.editTodos = ''
+      this.editTodos = {}
     },
     onChange ({ html, text, quill }, item) {
       item.title = text.substring(0, 10)
@@ -157,6 +159,9 @@ export default {
     onHashChange () {
       let hash = window.location.hash.slice(1)
       this.visibility = hash
+    },
+    closeEditor () {
+      this.editTodos = {}
     }
   },
   directives: {
@@ -171,5 +176,5 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
-@import "../style/list";
+@import "../style/note";
 </style>
