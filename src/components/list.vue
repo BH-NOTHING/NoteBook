@@ -6,11 +6,11 @@
       </div>
     </div>
     <div class="main">
-      <h3 class="big-title">添加事项：</h3>
+      <h3 class="txt-title">添加事项：</h3>
       <div class="note-add">
         <input
           type="text"
-          placehoder="添加事项"
+          placeholder="添加事项"
           class="note-add-input"
           v-model="todo"
         />
@@ -26,7 +26,7 @@
           <a :class="{active:visibility === 'finished'}" href="#finished">已完成事项</a>
         </li>
       </ul>
-      <h3 class="big-title">事项列表：</h3>
+      <h3 class="txt-title">事项列表：</h3>
       <div class="notes">
         <span class="no-note-tip" v-show="!list.length">还没有添加任何事项</span>
         <ul class="todo-list">
