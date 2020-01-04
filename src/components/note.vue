@@ -1,11 +1,11 @@
 <template>
   <div class="note-book">
-    <div class="note-header">
+    <header class="note-header">
       <div class="header-title">
         <h2>记事本</h2>
       </div>
-    </div>
-    <div class="note-main">
+    </header>
+    <section class="note-main">
       <div class="note-add">
         <input
           type="text"
@@ -47,7 +47,7 @@
           </li>
         </ul>
       </div>
-    </div>
+    </section>
     <div class="note-editor" v-if="editNotes.content !== undefined">
       <div class="note-editor-header">
         <button class="note-back" @click="closeEditor" />
