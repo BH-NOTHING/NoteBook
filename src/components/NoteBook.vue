@@ -36,7 +36,7 @@
               completed: item.isChecked,
               editing: item === editNotes
             }"
-            :key="item.time"
+            :key="item.stamp"
           >
             <div class="note-view">
               <input type="checkbox" class="toggle" v-model="item.isChecked" />
@@ -122,7 +122,8 @@ export default {
         title: getTitle(this.newNote),
         isChecked: false,
         content: this.newNote,
-        time: getNowFormatDate()
+        time: getNowFormatDate(),
+        stamp: new Date().getTime()
       })
       this.newNote = ''
     },
@@ -141,6 +142,7 @@ export default {
       // 输入改变
       this.editNotes.title = getTitle(text)
       this.editNotes.time = getNowFormatDate()
+      this.editNotes.stamp = new Date().getTime()
     },
     onHashChange () {
       // hash地址改变
