@@ -18,13 +18,10 @@
       <ul class="note-content" v-show="noteList.length">
         <li class="note-content-tips">还有{{ unFinishItem }}个事项未完成</li>
         <li class="note-action">
-          <a :class="{ active: visibility === 'all' }" href="#all">所有事项</a>
-          <a :class="{ active: visibility === 'unfinished' }" href="#unfinished"
-            >未完成事项</a
-          >
-          <a :class="{ active: visibility === 'finished' }" href="#finished"
-            >已完成事项</a
-          >
+          <a v-for="option in visibleOptions"
+             :class="{active: visibility === option.name}"
+             :href="'#' + option.name"
+             :key="option.name">{{option.content}}</a>
         </li>
       </ul>
       <h3 class="main-title">事项列表：</h3>
@@ -35,11 +32,11 @@
         <ul class="todo-list">
           <li
             class="todo"
+            v-for="(item) in filteredList()"
             :class="{
               completed: item.isChecked,
               editing: item === editNotes
             }"
-            v-for="(item) in filteredList()"
             :key="item.time"
           >
             <div class="todo-view">
@@ -86,7 +83,17 @@ export default {
       noteList: list,
       newNote: '', // 添加的新事项
       editNotes: {}, // 正在编辑的数据
-      visibility: window.location.hash.slice(1) || 'all' // 通过visibility变化，结合hash对数据进行筛选，默认值是all
+      visibility: window.location.hash.slice(1) || 'all', // 通过visibility变化，结合hash对数据进行筛选，默认值是all
+      visibleOptions: [{
+        name: 'all',
+        content: '全部'
+      }, {
+        name: 'unfinished',
+        content: '未完成'
+      }, {
+        name: 'finished',
+        content: '已完成'
+      }]
     }
   },
   watch: {

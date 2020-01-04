@@ -21,21 +21,18 @@ export function getTitle (content) {
 
 export function getNowFormatDate () {
   let date = new Date()
-  let year = date.getFullYear()
-  let month = date.getMonth() + 1
-  let strDate = date.getDate()
-  let hour = date.getHours()
-  let minute = date.getMinutes()
-  let second = date.getSeconds()
-
-  if (month >= 1 && month <= 9) {
-    month = '0' + month
+  let time = {
+    year: date.getFullYear(),
+    month: date.getMonth() + 1,
+    date: date.getDate(),
+    hour: date.getHours(),
+    minute: date.getMinutes(),
+    second: date.getSeconds()
   }
-  if (strDate >= 0 && strDate <= 9) {
-    strDate = '0' + strDate
+  for (let i in time) {
+    if (time[i] <= 9) {
+      time[i] = '0' + time[i]
+    }
   }
-  if (second >= 0 && second <= 9) {
-    second = '0' + second
-  }
-  return year + '-' + month + '-' + strDate + ' ' + hour + ':' + minute + ':' + second
+  return time.year + '-' + time.month + '-' + time.date + ' ' + time.hour + ':' + time.minute + ':' + time.second
 }
