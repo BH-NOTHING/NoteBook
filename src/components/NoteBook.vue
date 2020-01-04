@@ -118,7 +118,7 @@ export default {
   methods: {
     onAddNote () {
       // 添加事项
-      this.noteList.push({
+      this.noteList.unshift({
         title: getTitle(this.newNote),
         isChecked: false,
         content: this.newNote,
