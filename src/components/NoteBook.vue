@@ -29,7 +29,7 @@
         <span class="no-note-tip" v-show="!noteList.length"
           >还没有添加任何事项</span
         >
-        <ul class="note-list">
+        <ul class="note-nav">
           <li
             v-for="(item) in filteredList()"
             :class="{
