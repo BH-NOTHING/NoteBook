@@ -3,6 +3,9 @@
 git clone https://github.com/BH-NOTHING/NoteBook.git
 ```
 ```
+cd NoteBook
+```
+```
 npm install
 ```
 ```
