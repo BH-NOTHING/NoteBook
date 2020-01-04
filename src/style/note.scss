@@ -21,11 +21,9 @@
   }
 
   .note-main {
-    height: 100%;
     overflow: auto;
-    padding: 0 30px;
+    padding: 60px 30px 0 30px;
     margin: 0px auto;
-    padding-top: 60px;
     box-sizing:border-box;
     .note-content {
       .note-action {
@@ -74,7 +72,6 @@
     .notes {
       height: 100%;
       flex: 1;
-      overflow: scroll;
       background-color: #fff;
       .no-note-tip {
         padding:10px 0 10px 10px;
@@ -142,6 +139,9 @@
               top: calc(50% - 5px);
               font-size: 10px;
               right: 50px;;
+            }
+            label {
+              cursor: pointer;
             }
           }
           label {
