@@ -13,7 +13,7 @@
           class="note-add-input"
           v-model="newNote"
         />
-        <button class="note-add-btn" @click="onAdd">添加</button>
+        <button class="note-add-btn" @click="onAddNote">添加</button>
       </div>
       <ul class="note-content" v-show="noteList.length">
         <li class="note-content-tips">还有{{ unFinishItem }}个事项未完成</li>
@@ -29,9 +29,8 @@
         <span class="no-note-tip" v-show="!noteList.length"
           >还没有添加任何事项</span
         >
-        <ul class="todo-list">
+        <ul class="note-list">
           <li
-            class="todo"
             v-for="(item) in filteredList()"
             :class="{
               completed: item.isChecked,
@@ -39,11 +38,11 @@
             }"
             :key="item.time"
           >
-            <div class="todo-view">
+            <div class="note-view">
               <input type="checkbox" class="toggle" v-model="item.isChecked" />
               <label @click="onOpenEditor(item)">{{ item.title }}</label>
               <span class="note-time">{{item.time}}</span>
-              <button class="destroy" @click="onDelete(item)"></button>
+              <button class="destroy" @click="onDelNote(item)"></button>
             </div>
           </li>
         </ul>
@@ -70,7 +69,7 @@ import quillEditor from 'vue-quill-editor/src/editor'
 import 'quill/dist/quill.core.css'
 import 'quill/dist/quill.snow.css'
 
-const list = store.fetch('noteStore')
+const list = store.fetch('noteStore') // 从缓存中读取历史记录
 
 export default {
   name: 'notePad',
@@ -80,8 +79,8 @@ export default {
   props: {},
   data () {
     return {
-      noteList: list,
-      newNote: '', // 添加的新事项
+      noteList: list, // 当前事项列表
+      newNote: '', // 添加事项的内容
       editNotes: {}, // 正在编辑的数据
       visibility: window.location.hash.slice(1) || 'all', // 通过visibility变化，结合hash对数据进行筛选，默认值是all
       visibleOptions: [{
@@ -98,6 +97,7 @@ export default {
   },
   watch: {
     noteList: {
+      // 监听noteList变化，写入缓存
       handler: function () {
         store.save('noteStore', this.noteList)
       },
@@ -112,13 +112,14 @@ export default {
   },
   computed: {
     unFinishItem: function () {
+      // 未完成事项个数
       return this.noteList.filter(function (item) {
         return item.isChecked === false
       }).length
     }
   },
   methods: {
-    onAdd () {
+    onAddNote () {
       // 添加事项
       this.noteList.push({
         title: getTitle(this.newNote),
@@ -129,15 +130,15 @@ export default {
       this.newNote = ''
     },
 
-    onDelete (todo) {
+    onDelNote (note) {
       // 删除事项
-      let index = this.noteList.indexOf(todo)
+      let index = this.noteList.indexOf(note)
       this.noteList.splice(index, 1)
     },
 
-    onOpenEditor (todo) {
+    onOpenEditor (note) {
       // 打开编辑器
-      this.editNotes = todo
+      this.editNotes = note
     },
     onInput ({ html, text, quill }) {
       // 输入改变

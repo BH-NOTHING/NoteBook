@@ -82,7 +82,7 @@
         border-bottom: 1px solid #ededed;
         color:#777;
       }
-      .todo-list {
+      .note-list {
         margin: 0;
         padding: 0;
         list-style: none;
@@ -96,7 +96,7 @@
           &.editing {
             border-bottom: none;
             padding: 0;
-            .todo-view {
+            .note-view {
               display: none;
             }
             .edit {
@@ -134,7 +134,7 @@
               content: '×';
             }
           }
-          .todo-view  {
+          .note-view  {
             min-height: 49px;
             .note-time {
               color: #CCCCCC;
@@ -173,6 +173,8 @@
     position:fixed;
     top: 0;
     background: #FFFFFF;
+    display: flex;
+    flex-direction: column;
     .note-editor-header {
       width: 100%;
       padding: 20px 20px 10px 20px;
@@ -185,7 +187,7 @@
       }
     }
     .quill-editor {
-      height: 500px;
+      height: 100%;
     }
   }
 }
