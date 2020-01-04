@@ -53,10 +53,7 @@
         <button class="note-back" @click="closeEditor" />
       </div>
       <quill-editor
-        ref="myQuillEditor"
         v-model="editNotes.content"
-        class="edit"
-        contenteditable="false"
         @change="onInput"
       />
     </div>
