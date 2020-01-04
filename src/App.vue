@@ -1,16 +1,16 @@
 <template>
   <div id="app">
-    <NotePad/>
+    <NoteBook/>
   </div>
 </template>
 
 <script>
-import NotePad from './components/note'
+import NoteBook from './components/NoteBook'
 
 export default {
   name: 'App',
   components: {
-    NotePad
+    NoteBook
   }
 }
 </script>

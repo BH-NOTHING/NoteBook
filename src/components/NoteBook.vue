@@ -69,7 +69,7 @@ import 'quill/dist/quill.snow.css'
 const list = store.fetch('noteStore') // 从缓存中读取历史记录
 
 export default {
-  name: 'notePad',
+  name: 'NoteBook',
   components: {
     quillEditor
   },
