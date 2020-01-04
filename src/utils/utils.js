@@ -12,7 +12,7 @@ export const store = {
 }
 
 export function getTitle (content) {
-  let title = content.replace(/[\r\n]/g, '')
+  let title = content.split('\n')[0]
   if (title.length > 6) {
     title = title.substring(0, 6) + '...'
   }
