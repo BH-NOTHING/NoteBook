@@ -20,7 +20,7 @@ scss-loader、vue-quill-editor
 使用localstorage进行缓存处理
 
 ## 3. 添加事项
-默认以输入内容的前6个字符作为标题，超出部分显示省略号
+默认以输入内容第一行的前6个字符作为标题，超出部分显示省略号
 
 ![image](https://file3.ih5.cn/v35/files/0a00142e4510684100857ed017c78c84_63949_836_1206.jpg)
 
