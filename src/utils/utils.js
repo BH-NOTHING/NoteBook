@@ -1,11 +1,13 @@
 export const store = {
   save (key, value) {
     localStorage.setItem(key, JSON.stringify(value))
+    // TODO 保存至服务端
   },
   fetch (key) {
     try {
       return JSON.parse(localStorage.getItem(key)) || []
     } catch (e) {
+      // TODO 从服务端获取
       return []
     }
   }
