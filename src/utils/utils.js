@@ -12,9 +12,9 @@ export const store = {
 }
 
 export function getTitle (content) {
-  let title = content
-  if (content.length > 6) {
-    title = content.substring(0, 6) + '...'
+  let title = content.replace(/[\r\n]/g, '')
+  if (title.length > 6) {
+    title = title.substring(0, 6) + '...'
   }
   return title
 }

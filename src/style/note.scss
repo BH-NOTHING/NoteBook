@@ -158,9 +158,9 @@
             width: 20px;
             height: 20px;
             position: absolute;
-            top: 5px;
-            bottom: 0;
-            margin: auto 0;
+            top: calc(50% - 10px);
+            left: 10px;
+            margin: 0;
             border: none;
           }
         }
@@ -187,7 +187,7 @@
       }
     }
     .quill-editor {
-      height: 100%;
+      height: calc(100% - 131px);
     }
   }
 }
